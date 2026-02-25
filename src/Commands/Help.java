@@ -19,12 +19,16 @@ public class Help implements Command {
         }
     }
 
-    public boolean checkArg(String[] args) {
-        if (args.length == 0) {
+
+    private boolean checkArg(String[] args){
+        if (args.length == 0 || args == null){
             return true;
+
         }
+        managerInputOutput.writeLineIO("Ошибка! Команда Help не принимает аргументы. \n");
         return false;
     }
+
     @Override
     public String toString() { return "help - выводит справку по каждой программе";}
 }

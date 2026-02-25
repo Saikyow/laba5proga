@@ -9,16 +9,16 @@ import static Runner.Runner.managerInputOutput;
 
 public class PersonAsker {
     public Person createPerson(){
-        managerInputOutput.writeLineIO("Создание Person");
+        managerInputOutput.writeLineIO("Создание Person \n");
 
-        String name = askString("Введите имя (не может быть пустым)", false);
+        String name = askString("Введите имя (не может быть пустым) ", false);
         Coordinates coordinates = askCoordinates();
 
-        Color hairColor = askEnum("Выберите цвет волос", Color.class, false);
-        Country nationality = askEnum("Выберите страну", Country.class, false);
+        Color hairColor = askEnum("Выберите цвет волос ", Color.class, false);
+        Country nationality = askEnum("Выберите страну ", Country.class, false);
 
-        Float weight = askNumber("Введите вес (Float)", false, Float.class);
-        Float height = askNumber("Введите рост (Float)", false, Float.class);
+        Float weight = askNumber("Введите вес (Float) ", false, Float.class);
+        Float height = askNumber("Введите рост (Float) ", false, Float.class);
 
         Location location = askLocation();
 
@@ -29,7 +29,7 @@ public class PersonAsker {
             managerInputOutput.writeLineIO(message);
             String input = managerInputOutput.readLineIO().trim();
             if (input.isEmpty()){
-                managerInputOutput.writeLineIO("Не может быть пустым");
+                managerInputOutput.writeLineIO("Не может быть пустым\n");
                 continue;
             }
             return input.isEmpty() ? null : input;
@@ -46,7 +46,7 @@ public class PersonAsker {
                 if (type == Float.class) {
                     Float val = Float.parseFloat(input);
                     if (val <= 0){
-                        managerInputOutput.writeLineIO("Ошибка! Число должно быть больше 0");
+                        managerInputOutput.writeLineIO("Ошибка! Число должно быть больше 0 \n");
                         continue;
                     }
                     return type.cast(val);
@@ -56,15 +56,15 @@ public class PersonAsker {
                 if (type == Long.class){return type.cast(Long.parseLong(input));}
             }
             catch (NumberFormatException e){
-                managerInputOutput.writeLineIO("Ошибка! Введите число корректно");
+                managerInputOutput.writeLineIO("Ошибка! Введите число корректно \n");
             }
         }
     }
 
     private Coordinates askCoordinates(){
             managerInputOutput.writeLineIO("Введите координаты\n");
-            Double x = askNumber("Введите x (Double)", false, Double.class);
-            Long y = askNumber("Введите y (Long)", false, Long.class);
+            Double x = askNumber("Введите x (Double) ", false, Double.class);
+            Long y = askNumber("Введите y (Long) ", false, Long.class);
            try{
             return new Coordinates(x, y);
             }catch (IllegalArgumentException e){
@@ -79,18 +79,18 @@ public class PersonAsker {
         try{
             return Enum.valueOf(enumClass, input);
         }catch (Exception e){
-            managerInputOutput.writeLineIO("Ошибка! Выберете значение из списка");
+            managerInputOutput.writeLineIO("Ошибка! Выберете значение из списка\n");
         }
         return askEnum(message, enumClass, canbeNull);
     }
     private Location askLocation(){
-        managerInputOutput.writeLineIO("Хотите добавить страну? (y/n)");
+        managerInputOutput.writeLineIO("Хотите добавить страну? (y/n) ");
         String answer = managerInputOutput.readLineIO().trim().toLowerCase();
         if (answer.equals("y")){
-            Double x = askNumber("Введите x (Double)", false, Double.class);
-            Integer y = askNumber("Введите y (Integer)", true, Integer.class);
-            Double z = askNumber("Введите z (Double)", false, Double.class);
-            String name = askString("Название локации", false);
+            Double x = askNumber("Введите x (Double) ", false, Double.class);
+            Integer y = askNumber("Введите y (Integer) ", true, Integer.class);
+            Double z = askNumber("Введите z (Double) ", false, Double.class);
+            String name = askString("Название локации ", false);
             return new Location(x, y, z,name);
         }
         return null;

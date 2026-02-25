@@ -1,0 +1,4 @@
+show
+info
+insert 123
+clear

@@ -4,6 +4,7 @@ import enums.Color;
 import enums.Country;
 import managers.ManagerGenerateId;
 
+import java.security.Key;
 import java.time.ZonedDateTime;
 
 public class Person implements Comparable<Person>{
@@ -60,8 +61,8 @@ public class Person implements Comparable<Person>{
     public Location getLocation() {return location;}
     @Override
     public String toString() {
-        return "Person [id=" + id + ", name=" + name + ", Height=" + height + ", Weight=" + weight + ", HairColor=" + hairColor
-                + ", nationality=" + nationality + "]";
+        return "Person [id= " + id + ", name= " + name + ", Height= " + height + ", Weight= " + weight + ", HairColor= " + hairColor
+                + ", nationality= " + nationality + "]";
     }
 
 
