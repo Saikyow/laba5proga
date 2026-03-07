@@ -1,7 +1,6 @@
 package managers;
 
 import Commands.*;
-import User.Person;
 import User.PersonAsker;
 import interfaces.Command;
 
@@ -10,16 +9,23 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.HashMap;
 
-import static Runner.Runner.collectionManager;
-import static Runner.Runner.managerParserCommand;
+/**
+ * Парсит и выполняет команды, введенные пользователем.
+ * Хранит историю выполненных команд.
+ */
+public class ManagerParserCommand {
+    private final HashMap<String, Command> commands;
+    private final List<String> historyCommands;
+    private static final int MAX_HISTORY_SIZE = 14;
 
-public class ManagerParserCommand{
-	private final HashMap<String, Command> commands;
-	private final List<String> historyCommands;
-	private static final int MAX_HISTORY_SIZE = 14;
-
+    /**
+     * Создает парсер команд и регистрирует все доступные команды.
+     *
+     * @param collectionManager менеджер коллекции
+     * @param personAsker       объект для создания Person
+     */
     public ManagerParserCommand(CollectionManager collectionManager, PersonAsker personAsker) {
-        this.commands = new HashMap<String, Command>();
+        this.commands = new HashMap<>();
         this.historyCommands = new ArrayList<>(MAX_HISTORY_SIZE);
 
         this.commands.put("help", new Help());
@@ -34,13 +40,18 @@ public class ManagerParserCommand{
         this.commands.put("exit", new Exit());
         this.commands.put("history", new History(this));
         this.commands.put("replace_if_greater", new ReplaceIfGreater(collectionManager, personAsker));
-        this.commands.put("replace_if_lowe", new ReplaceIfLowe(collectionManager,personAsker));
+        this.commands.put("replace_if_lowe", new ReplaceIfLowe(collectionManager, personAsker));
         this.commands.put("sum_of_weight", new SumOfWeight(collectionManager));
         this.commands.put("group_counting_by_name", new GroupCountingByName(collectionManager));
         this.commands.put("print_ascending", new PrintAscending(collectionManager));
-
-
     }
+
+    /**
+     * Парсит и выполняет команду.
+     *
+     * @param s строка с командой и аргументами
+     * @return true, если команда распознана и выполнена
+     */
     public boolean parserCommand(String s) {
         String[] command = s.trim().replaceAll("\\s+", " ").split(" ");
 
@@ -58,13 +69,21 @@ public class ManagerParserCommand{
         return false;
     }
 
-    public List<Command> getCommand(){
-        List<Command> commandList = new ArrayList<>();
-        commandList.addAll(this.commands.values());
-        return commandList;
+    /**
+     * Возвращает список всех зарегистрированных команд.
+     *
+     * @return список объектов Command
+     */
+    public List<Command> getCommand() {
+        return new ArrayList<>(this.commands.values());
     }
-    public List<String> getHistoryCommands(){return historyCommands;}
 
-
-
+    /**
+     * Возвращает историю выполненных команд.
+     *
+     * @return список строк с командами
+     */
+    public List<String> getHistoryCommands() {
+        return historyCommands;
+    }
 }

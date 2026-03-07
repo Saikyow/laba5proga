@@ -9,14 +9,30 @@ import java.util.Map;
 
 import static Runner.Runner.managerInputOutput;
 
+/**
+ * Команда update_id - обновляет значение элемента коллекции по его ID.
+ */
 public class UpdateID implements Command {
     private CollectionManager collectionManager;
     private PersonAsker personAsker;
 
+    /**
+     * Создает команду update_id.
+     *
+     * @param collectionManager менеджер коллекции
+     * @param personAsker объект для создания нового Person
+     */
     public UpdateID(CollectionManager collectionManager, PersonAsker personAsker){
         this.collectionManager = collectionManager;
         this.personAsker = personAsker;
     }
+
+    /**
+     * Проверяет аргументы команды.
+     *
+     * @param args массив аргументов (должен содержать ID)
+     * @return true, если аргумент корректен
+     */
     public boolean checkArg(String[] args) {
         if (args == null || args.length == 0 || args[0].isEmpty()) {
             managerInputOutput.writeLineIO("Не указан ключ \n");
@@ -31,6 +47,12 @@ public class UpdateID implements Command {
         }
     }
 
+    /**
+     * Выполняет команду update_id.
+     * Находит элемент по ID и заменяет его новым объектом Person с сохранением ID.
+     *
+     * @param args аргументы команды (ID)
+     */
     public void executeCommand(String[] args){
         if (!checkArg(args)){
             return;
@@ -69,12 +91,18 @@ public class UpdateID implements Command {
 
             managerInputOutput.writeLineIO("Элемент с ID = " + targetId + " успешно обновлен. \n");
 
-        }catch (NumberFormatException e){
-
+        } catch (NumberFormatException e){
             managerInputOutput.writeLineIO("Ошибка при обработке ID " + e.getMessage());
         }
     }
 
+    /**
+     * Создает копию Person с указанным ID.
+     *
+     * @param person исходный объект Person
+     * @param id новый ID
+     * @return новый объект Person с заданным ID
+     */
     private Person createPersonwithsameId(Person person, long id){
         return new Person(
                 id,
@@ -89,8 +117,8 @@ public class UpdateID implements Command {
         );
     }
 
-
     @Override
-    public String toString(){return "update_id - обновляет значение элемента коллекции, id которого равен заданному";}
-
+    public String toString(){
+        return "update_id - обновляет значение элемента коллекции, id которого равен заданному";
+    }
 }

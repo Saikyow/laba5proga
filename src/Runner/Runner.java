@@ -7,21 +7,30 @@ import managers.ManagerParserCommand;
 
 import java.util.NoSuchElementException;
 
+/**
+ * Главный класс приложения, отвечающий за запуск и выполнение основного цикла команд.
+ */
 public class Runner {
     public static ManagerParserCommand managerParserCommand;
     public static ManagerInputOutput managerInputOutput;
     public static CollectionManager collectionManager;
     public static PersonAsker personAsker;
 
-
-
-    public Runner(){
+    /**
+     * Конструктор, инициализирующий все необходимые менеджеры и утилиты.
+     */
+    public Runner() {
         managerInputOutput = ManagerInputOutput.getInstance();
         collectionManager = new CollectionManager();
         personAsker = new PersonAsker();
         managerParserCommand = new ManagerParserCommand(collectionManager, personAsker);
     }
-    public void run(){
+
+    /**
+     * Запускает основной цикл обработки команд пользователя.
+     * Читает команды из ввода, передает их парсеру и обрабатывает возможное исключение.
+     */
+    public void run() {
         try {
             while (true) {
                 managerInputOutput.writeLineIO("Введите команду : ");
@@ -35,5 +44,4 @@ public class Runner {
             managerInputOutput.writeLineIO("...\n");
         }
     }
-
 }

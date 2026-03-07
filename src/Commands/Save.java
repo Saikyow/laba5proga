@@ -11,14 +11,27 @@ import java.util.Map;
 
 import static Runner.Runner.managerInputOutput;
 
+/**
+ * Команда save - сохраняет коллекцию в CSV файл.
+ */
 public class Save implements Command {
     private CollectionManager collectionManager;
 
+    /**
+     * Создает команду save.
+     *
+     * @param collectionManager менеджер коллекции для сохранения
+     */
     public Save(CollectionManager collectionManager){
         this.collectionManager = collectionManager;
     }
 
-
+    /**
+     * Выполняет команду save.
+     * Сохраняет текущую коллекцию в файл "collection.csv".
+     *
+     * @param args аргументы команды (не ожидаются)
+     */
     public void executeCommand(String[] args) {
         if (!checkArg(args)) {
             return;
@@ -27,8 +40,9 @@ public class Save implements Command {
         String filename = "collection.csv";
 
         try (PrintWriter writer = new PrintWriter(new FileWriter(filename))) {
-                writer.println("key;id;name;coordinates_x;coordinates_y;creationDate;height;weight;hairColor;nationality;" +
-                        "location_x;location_y;location_z;location_name");
+            writer.println("key;id;name;coordinates_x;coordinates_y;creationDate;height;weight;hairColor;nationality;" +
+                    "location_x;location_y;location_z;location_name");
+
             var collections = collectionManager.getCollections();
 
             for (Map.Entry<Long, Person> entry : collections.entrySet()) {
@@ -52,32 +66,32 @@ public class Save implements Command {
                         person.getLocation() != null ? person.getLocation().getName() : ""
                 );
                 writer.println(csvLine);
-
-
-
             }
 
             managerInputOutput.writeLineIO("Коллекция успешно сохранена в файл " + filename + "\n");
 
-
-
-
-        }catch (IOException e){
+        } catch (IOException e){
             managerInputOutput.writeLineIO("Ошибка при сохранении " + e.getMessage());
         }
-
     }
 
+    /**
+     * Проверяет аргументы команды.
+     *
+     * @param args массив аргументов
+     * @return true, если аргументов нет
+     */
     public boolean checkArg(String[] args) {
         if (args.length == 0 || args == null) {
             return true;
         } else {
             managerInputOutput.writeLineIO("Команда show не принимает аргументы \n");
             return false;
-
         }
     }
 
     @Override
-    public String toString(){return "save - сохранить коллекцию в файл";}
+    public String toString(){
+        return "save - сохранить коллекцию в файл";
+    }
 }

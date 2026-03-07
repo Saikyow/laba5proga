@@ -1,6 +1,5 @@
 package Commands;
 
-import User.Coordinates;
 import User.Person;
 import User.PersonAsker;
 import interfaces.Command;
@@ -8,16 +7,31 @@ import managers.CollectionManager;
 
 import static Runner.Runner.managerInputOutput;
 
+/**
+ * Команда replace_if_greater - заменяет значение по ключу, если новое значение больше старого.
+ * Сравнение производится по полю weight.
+ */
 public class ReplaceIfGreater implements Command {
     private PersonAsker personAsker;
     private CollectionManager collectionManager;
 
-
+    /**
+     * Создает команду replace_if_greater.
+     *
+     * @param collectionManager менеджер коллекции
+     * @param personAsker объект для создания нового Person
+     */
     public ReplaceIfGreater(CollectionManager collectionManager, PersonAsker personAsker){
         this.collectionManager = collectionManager;
         this.personAsker = personAsker;
     }
 
+    /**
+     * Проверяет аргументы команды.
+     *
+     * @param args массив аргументов (должен содержать ключ)
+     * @return true, если аргумент корректен
+     */
     public boolean checkArg(String[] args) {
         if (args == null || args.length == 0 || args[0].isEmpty()) {
             managerInputOutput.writeLineIO("Не указан ключ \n");
@@ -32,6 +46,12 @@ public class ReplaceIfGreater implements Command {
         }
     }
 
+    /**
+     * Выполняет команду replace_if_greater.
+     * Сравнивает вес нового и старого элемента. Если новый вес больше, производит замену.
+     *
+     * @param args аргументы команды (ключ)
+     */
     public void executeCommand(String[] args){
         if(!checkArg(args)){
             return;
@@ -57,20 +77,28 @@ public class ReplaceIfGreater implements Command {
                 managerInputOutput.writeLineIO("Новый элемент меньше старого => замена не производится. \n");
             }
 
-
-
-        }catch (NumberFormatException e){
+        } catch (NumberFormatException e){
             managerInputOutput.writeLineIO("Ошибка при обработке ключа " + e.getMessage());
         }
     }
+
+    /**
+     * Сравнивает двух Person по полю weight.
+     *
+     * @param newPerson новый объект Person
+     * @param oldPerson старый объект Person
+     * @return true, если вес нового больше веса старого
+     */
     public boolean comparePerson(Person newPerson, Person oldPerson){
         if (newPerson.getWeight() != null && oldPerson.getWeight() != null){
             return newPerson.getWeight() > oldPerson.getWeight();
-        }else{
+        } else {
             return false;
         }
     }
 
     @Override
-    public String toString(){return "replace_if_greater - заменяет значение по ключу, если новое значение больше старого";}
+    public String toString(){
+        return "replace_if_greater - заменяет значение по ключу, если новое значение больше старого";
+    }
 }

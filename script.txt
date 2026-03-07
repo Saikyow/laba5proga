@@ -10,4 +10,4 @@ italy
 n
 show
 info
-execute_script script.txt
+exit
