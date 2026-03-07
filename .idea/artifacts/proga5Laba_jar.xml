@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="proga5Laba:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/proga5Laba_jar</output-path>
+    <root id="archive" name="proga5Laba.jar">
+      <element id="module-output" name="proga5Laba" />
+      <element id="library" level="project" name="KotlinJavaRuntime" />
+    </root>
+  </artifact>
+</component>

@@ -36,7 +36,8 @@ public class Show implements Command {
         for (Map.Entry<Long, Person> entry : collections.entrySet()){
             Long key = entry.getKey();
             Person person = entry.getValue();
-            managerInputOutput.writeLineIO("Ключ: " + key + " name: "+ person.getName() + " Вес: " + person.getWeight() +  " id: " + person.getId() + " Время создания " + person.getCrationDate() + "\n");
+            managerInputOutput.writeLineIO("Ключ: " + key + " name: "+ person.getName() + " Вес: " + person.getWeight() +
+                    " id: " + person.getId() + " Время создания " + person.getCrationDate() + person.getLocation() + "\n");
         }
 
 

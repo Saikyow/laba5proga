@@ -1,5 +1,9 @@
 package enums;
 
+/**
+ * Перечисление возможных национальностей Person.
+ */
+
 public enum Country {
     UNITED_KINGDOM,
     ITALY,

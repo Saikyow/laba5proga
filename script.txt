@@ -1,4 +1,13 @@
+
+insert 123
+pop
+1
+1
+white
+italy
+90
+190
+n
 show
 info
-insert 123
-clear
+execute_script script.txt

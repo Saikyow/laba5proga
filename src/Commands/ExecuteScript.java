@@ -4,16 +4,16 @@ import interfaces.Command;
 import managers.ManagerParserCommand;
 
 import java.io.*;
+import java.util.HashSet;
+import java.util.Set;
 
 import static Runner.Runner.managerInputOutput;
+import static Runner.Runner.managerParserCommand;
 
 public class ExecuteScript implements Command {
     private ManagerParserCommand parserCommand;
-
-    public ExecuteScript(ManagerParserCommand parserCommand){
-        this.parserCommand = parserCommand;
-    }
-
+    private int lineNumer = 0;
+    private static final Set<String> setPaths = new HashSet<String>();
 
 
     public boolean checkArg(String[] args) {
@@ -26,13 +26,21 @@ public class ExecuteScript implements Command {
     }
 
     public void executeCommand(String[] args){
-        if (!checkArg(args)){
+        if (!checkArg(args)) {
+            managerInputOutput.writeLineIO("Ошибка! Команда должна принимать аргументы. \n");
             return;
         }
 
-        String filename = args[0];
+        String fileName = args[0];
 
-        File file = new File(filename);
+        File file = new File("/src" + fileName);
+
+        if (!file.exists()) {
+            file = new File(fileName);
+        }
+
+        String pathFile = file.getAbsolutePath();
+
 
         if (!file.exists()){
             managerInputOutput.writeLineIO("Файл не найден. \n");
@@ -43,58 +51,55 @@ public class ExecuteScript implements Command {
             return;
         }
 
-        try {InputStreamReader reader = new InputStreamReader(new FileInputStream(file), "UTF-8");
-
-            BufferedReader bufferedReader = new BufferedReader(reader);
-
-            String line;
-            int lineNumber = 0;
-            boolean hasErrors = false;
-
-            while ((line = bufferedReader.readLine()) != null ){
-                lineNumber++;
-                line = line.trim();
-
-                if (line.isEmpty() || line.startsWith("#")){continue;}
-
-                String[] parts = line.split("\\s+", 2);
-                String commandName = parts[0].toLowerCase();
-                String[] commandArgs = parts.length > 1 ? new String[]{parts[1]} : new String[0];
-
-                if (isInteractiveCommand(commandName)) {
-                    managerInputOutput.writeLineIO("Команда '" + commandName + "' требует ввода и пропущена в скрипте.\n");
-                    hasErrors = true;
-                    continue;
-                }
-
-                boolean success = parserCommand.parserCommand(line);
-                if (!success) {
-                    managerInputOutput.writeLineIO("Ошибка выполнения команды: " + commandName + "\n");
-                    hasErrors = true;
-                }
-                if (hasErrors)
-                    managerInputOutput.writeLineIO("Скрипт выполнен с ошибками/пропусками. \n");
-                else
-                    managerInputOutput.writeLineIO("Скрипт успешно выполнен. \n");
-
-
-            }
-
-            }catch (FileNotFoundException e){
-            managerInputOutput.writeLineIO("Файл не найден " + e.getMessage() + "\n");
-
-        }   catch (IOException e){
-            managerInputOutput.writeLineIO("Ошибка ввода - вывода. " +  e.getMessage() + "\n");
+        if (setPaths.contains(pathFile)){
+            managerInputOutput.writeLineIO("Ошибка! Рекурсия в скрипте. \n");
+            return;
         }
 
 
 
-    }
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))){
+            setPaths.add(pathFile);
+
+            managerInputOutput.pushFileExecute(reader);
+
+            lineNumer = 0;
+
+            String line;
+
+            while (true){
+                line = managerInputOutput.readLineIO();
+
+                if (line == null){break;}
+
+                if (!managerInputOutput.isCurrentReader(reader)){break;}
+
+                lineNumer++;
+                line = line.trim();
+                if (line.isEmpty()){continue;}
+
+                managerParserCommand.parserCommand(line);
+
+                if (!managerInputOutput.isCurrentReader(reader)){break;}
+
+//                if (managerInputOutput.isCurrentReader(reader)){
+//                    managerInputOutput.popFileExecute();
+//                }
+//                managerInputOutput.writeLineIO("Скрипт " + fileName + " выполнен!\n");
+            }
+            if (managerInputOutput.isCurrentReader(reader)){
+                managerInputOutput.popFileExecute();
+            }
+            managerInputOutput.writeLineIO("Скрипт " + fileName + " выполнен!\n");
 
 
-    private boolean isInteractiveCommand(String cmd) {
-        return cmd.equals("insert") || cmd.equals("update_id") ||
-                cmd.equals("replace_if_greater") || cmd.equals("replace_if_lowe");
+
+        }catch (IOException e){
+            managerInputOutput.writeLineIO("Ошибка " + e.getMessage() + "\n");
+        }finally {
+            setPaths.remove(pathFile);
+        }
+
     }
 
     @Override

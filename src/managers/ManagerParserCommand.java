@@ -30,7 +30,7 @@ public class ManagerParserCommand{
         this.commands.put("remove_key", new RemoveKey(collectionManager));
         this.commands.put("clear", new Clear(collectionManager));
         this.commands.put("save", new Save(collectionManager));
-        this.commands.put("execute_script", new ExecuteScript(this));
+        this.commands.put("execute_script", new ExecuteScript());
         this.commands.put("exit", new Exit());
         this.commands.put("history", new History(this));
         this.commands.put("replace_if_greater", new ReplaceIfGreater(collectionManager, personAsker));

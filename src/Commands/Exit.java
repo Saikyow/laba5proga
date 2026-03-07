@@ -7,7 +7,7 @@ import static Runner.Runner.managerInputOutput;
 public class Exit implements Command {
     public void executeCommand(String[] args){
         if (checkArg(args)) {
-            managerInputOutput.CloseIO();
+            managerInputOutput.closeIO();
             System.exit(0);
         }
         else {
