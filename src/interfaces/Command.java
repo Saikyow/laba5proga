@@ -3,7 +3,7 @@ package interfaces;
 /**
  * Базовый интерфейс для всех команд приложения.
  */
-public interface Command {
+public interface Command extends Cloneable{
 
     /**
      * Возвращает строковое представление команды с описанием.

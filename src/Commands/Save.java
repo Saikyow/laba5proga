@@ -37,7 +37,7 @@ public class Save implements Command {
             return;
         }
 
-        String filename = "collection.csv";
+        String filename = collectionManager.getFileName();
 
         try (PrintWriter writer = new PrintWriter(new FileWriter(filename))) {
             writer.println("key;id;name;coordinates_x;coordinates_y;creationDate;height;weight;hairColor;nationality;" +

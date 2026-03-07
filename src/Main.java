@@ -12,7 +12,7 @@ public class Main {
      * @param args аргументы командной строки (не используются)
      */
     public static void main(String[] args) {
-        Runner run = new Runner();
+        Runner run = new Runner(args[0]);
         run.run();
     }
 }

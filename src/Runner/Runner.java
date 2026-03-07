@@ -15,15 +15,17 @@ public class Runner {
     public static ManagerInputOutput managerInputOutput;
     public static CollectionManager collectionManager;
     public static PersonAsker personAsker;
+    public static String fileName;
 
     /**
      * Конструктор, инициализирующий все необходимые менеджеры и утилиты.
      */
-    public Runner() {
+    public Runner(String fileName) {
         managerInputOutput = ManagerInputOutput.getInstance();
-        collectionManager = new CollectionManager();
+        collectionManager = new CollectionManager(fileName);
         personAsker = new PersonAsker();
         managerParserCommand = new ManagerParserCommand(collectionManager, personAsker);
+
     }
 
     /**

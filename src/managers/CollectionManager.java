@@ -13,12 +13,12 @@ import static managers.ManagerGenerateId.generateId;
 public class CollectionManager {
     private HashMap<Long, Person> collections = new HashMap<>();
     private java.time.ZonedDateTime lastInitTime;
-    private static final String DEFAULT_CSV_FILE = "collection.csv";
-
+    private final String fileName;
     /**
      * Создает менеджер коллекции и загружает данные из файла по умолчанию.
      */
-    public CollectionManager() {
+    public CollectionManager(String fileName) {
+        this.fileName = fileName;
         this.lastInitTime = java.time.ZonedDateTime.now();
         loadCollectionFromFile();
     }
@@ -28,7 +28,7 @@ public class CollectionManager {
      * Если файл существует и содержит данные, они парсятся и добавляются в коллекцию.
      */
     public void loadCollectionFromFile() {
-        HashMap<Long, Person> loaded = csvParserManager.LoadFromCSV(DEFAULT_CSV_FILE);
+        HashMap<Long, Person> loaded = csvParserManager.LoadFromCSV(fileName);
         if (!loaded.isEmpty()) {
             this.collections = loaded;
             managerInputOutput.writeLineIO("Коллекция загружена с размером " + collections.size() + "\n");
@@ -60,7 +60,9 @@ public class CollectionManager {
     public void clearCollections() {
         this.collections.clear();
     }
-
+    public String getFileName() {
+        return fileName;
+    }
     /**
      * Возвращает коллекцию объектов Person.
      *

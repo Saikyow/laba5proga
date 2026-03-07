@@ -7,6 +7,7 @@ import enums.Color;
 import enums.Country;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -33,7 +34,7 @@ public class csvParserManager {
             return collections;
         }
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8))) {
 
             String headerLine = reader.readLine();
             if (headerLine == null) {
